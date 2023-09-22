@@ -144,6 +144,14 @@ namespace Vlc.DotNet.Wpf
         /// <returns>The number of buffers allocated</returns>
         private uint VideoFormat(out IntPtr userdata, IntPtr chroma, ref uint width, ref uint height, ref uint pitches, ref uint lines)
         {
+            if (disposedValue)
+            {
+                // Fixes a problem where this callback may be called after Dispose immediately after CreatePlayer.
+                // I am not confident that this correction is correct.
+                userdata = IntPtr.Zero;
+                return 0;
+            }
+
             var pixelFormat = IsAlphaChannelEnabled ? PixelFormats.Bgra32 : PixelFormats.Bgr32;
             FourCCConverter.ToFourCC("RV32", chroma);
             
