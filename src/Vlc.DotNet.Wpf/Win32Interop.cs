@@ -1,4 +1,4 @@
-﻿#if !NET45
+﻿#if !NET6_0_OR_GREATER
 namespace Vlc.DotNet.Wpf
 {
     using System;

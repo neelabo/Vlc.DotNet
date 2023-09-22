@@ -2,7 +2,7 @@
 {
     using System;
     using System.Runtime.InteropServices;
-#if !NETSTANDARD1_3
+#if !NET6_0_OR_GREATER
     using System.Security.Permissions;
 #endif
 
@@ -10,7 +10,7 @@
     /// Contains a handle that is safely released when not used anymore.
     /// </summary>
     /// <remarks>Inspired from code at https://msdn.microsoft.com/en-us/library/microsoft.win32.safehandles.safehandlezeroorminusoneisinvalid(v=vs.80).aspx#code-snippet-4 </remarks>
-#if !NETSTANDARD1_3
+#if !NET6_0_OR_GREATER
     [SecurityPermission(SecurityAction.Demand, UnmanagedCode = true)]
 #endif
     public sealed class Utf8StringHandle : SafeHandle

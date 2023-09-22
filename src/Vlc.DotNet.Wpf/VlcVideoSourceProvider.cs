@@ -6,7 +6,7 @@ namespace Vlc.DotNet.Wpf
 {
     using System;
     using System.IO;
-#if NET45
+#if NET6_0_OR_GREATER
     using System.IO.MemoryMappedFiles;
 #endif
     using System.Runtime.InteropServices;
@@ -22,7 +22,7 @@ namespace Vlc.DotNet.Wpf
     /// </summary>
     public class VlcVideoSourceProvider : INotifyPropertyChanged, IDisposable
     {
-#if NET45
+#if NET6_0_OR_GREATER
         /// <summary>
         /// The memory mapped file that contains the picture data
         /// </summary>
@@ -172,7 +172,7 @@ namespace Vlc.DotNet.Wpf
             lines = this.GetAlignedDimension(height, 32);
 
             var size = pitches * lines;
-#if NET45
+#if NET6_0_OR_GREATER
             this.memoryMappedFile = MemoryMappedFile.CreateNew(null, size);
             var handle = this.memoryMappedFile.SafeMemoryMappedFileHandle.DangerousGetHandle();
 #else
@@ -194,7 +194,7 @@ namespace Vlc.DotNet.Wpf
                     (int)args.width, (int)args.height, args.pixelFormat, (int)args.pitches, 0);
             }));
 
-#if NET45
+#if NET6_0_OR_GREATER
             this.memoryMappedView = this.memoryMappedFile.CreateViewAccessor();
             var viewHandle = this.memoryMappedView.SafeMemoryMappedViewHandle.DangerousGetHandle();
 #else
@@ -252,7 +252,7 @@ namespace Vlc.DotNet.Wpf
         {
             this.VideoSource = null;
 
-#if NET45
+#if NET6_0_OR_GREATER
             this.memoryMappedView?.Dispose();
             this.memoryMappedView = null;
             this.memoryMappedFile?.Dispose();
