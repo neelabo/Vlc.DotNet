@@ -3,7 +3,7 @@
 
   <PropertyGroup>
     <Title>Vlc.DotNet.Core.Interops</Title>
-    <TargetFrameworks>net6.0</TargetFrameworks>
+    <TargetFrameworks>net8.0</TargetFrameworks>
     <Description>Wrapper to use the audio/video capabilities of the VLC libraries.</Description>
     <PackageTags>vlc media wrapper interop interops</PackageTags>
   </PropertyGroup>
