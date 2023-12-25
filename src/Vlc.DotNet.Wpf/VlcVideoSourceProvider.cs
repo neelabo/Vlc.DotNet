@@ -168,7 +168,7 @@ namespace Vlc.DotNet.Wpf
                         height = trackInfo.Height;
                         if (trackInfo.SarDen != 0)
                         {
-                            width = width * trackInfo.SarNum / trackInfo.SarDen;
+                            width = (uint)((ulong)width * trackInfo.SarNum / trackInfo.SarDen);
                         }
                     }
 
