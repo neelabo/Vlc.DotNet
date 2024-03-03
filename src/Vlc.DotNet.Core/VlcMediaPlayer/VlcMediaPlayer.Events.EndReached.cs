@@ -15,6 +15,8 @@ namespace Vlc.DotNet.Core
 
         public void OnMediaPlayerEndReached()
         {
+            if (disposedValue) return;
+
             var del = EndReached;
             if (del != null)
                 del(this, new VlcMediaPlayerEndReachedEventArgs());

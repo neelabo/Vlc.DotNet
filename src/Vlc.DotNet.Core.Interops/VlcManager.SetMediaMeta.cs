@@ -7,6 +7,8 @@ namespace Vlc.DotNet.Core.Interops
     {
         public void SetMediaMeta(VlcMediaInstance mediaInstance, MediaMetadatas metadata, string value)
         {
+            if (disposedValue) throw new ObjectDisposedException(GetType().FullName);
+
             if (mediaInstance == IntPtr.Zero)
                 throw new ArgumentException("Media instance is not initialized.");
             using (var handle = Utf8InteropStringConverter.ToUtf8StringHandle(value))

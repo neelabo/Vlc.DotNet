@@ -18,6 +18,8 @@ namespace Vlc.DotNet.Core
 
         public void OnMediaPlayerAudioVolume(float volume)
         {
+            if (disposedValue) return;
+
             AudioVolume?.Invoke(this, new VlcMediaPlayerAudioVolumeEventArgs(volume));
         }
     }

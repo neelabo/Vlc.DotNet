@@ -15,6 +15,8 @@ namespace Vlc.DotNet.Core.Interops
         /// </summary>
         public void SetDialogCallbacks(DialogCallbacks? callbacks, IntPtr data)
         {
+            if (disposedValue) throw new ObjectDisposedException(GetType().FullName);
+
             if (VlcVersionNumber.Major < 3)
             {
                 throw new InvalidOperationException($"You need VLC version 3.0 or higher to be able to use {nameof(SetDialogCallbacks)}");
@@ -41,6 +43,8 @@ namespace Vlc.DotNet.Core.Interops
         /// </summary>
         public void SetDialogContext(IntPtr dialogId, IntPtr data)
         {
+            if (disposedValue) return;
+
             if (VlcVersionNumber.Major < 3)
             {
                 throw new InvalidOperationException($"You need VLC version 3.0 or higher to be able to use {nameof(SetDialogContext)}");
@@ -55,6 +59,8 @@ namespace Vlc.DotNet.Core.Interops
         /// </summary>
         public IntPtr GetDialogContext(IntPtr dialogId)
         {
+            if (disposedValue) return IntPtr.Zero;
+
             if (VlcVersionNumber.Major < 3)
             {
                 throw new InvalidOperationException($"You need VLC version 3.0 or higher to be able to use {nameof(GetDialogContext)}");
@@ -71,6 +77,8 @@ namespace Vlc.DotNet.Core.Interops
         /// <returns>0 on success, or -1 on error</returns>
         public int PostLogin(IntPtr dialogId, Utf8StringHandle username, Utf8StringHandle password, bool store)
         {
+            if (disposedValue) return -1;
+
             if (VlcVersionNumber.Major < 3)
             {
                 throw new InvalidOperationException($"You need VLC version 3.0 or higher to be able to use {nameof(PostLogin)}");

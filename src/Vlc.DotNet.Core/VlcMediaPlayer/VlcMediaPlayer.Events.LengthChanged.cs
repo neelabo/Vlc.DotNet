@@ -17,6 +17,8 @@ namespace Vlc.DotNet.Core
 
         public void OnMediaPlayerLengthChanged(long newLength)
         {
+            if (disposedValue) return;
+
             LengthChanged?.Invoke(this, new VlcMediaPlayerLengthChangedEventArgs(newLength));
         }
     }

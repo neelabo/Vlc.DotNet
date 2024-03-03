@@ -18,6 +18,8 @@ namespace Vlc.DotNet.Core
 
         public void OnMediaPlayerBuffering(float newCache)
         {
+            if (disposedValue) return;
+
             Buffering?.Invoke(this, new VlcMediaPlayerBufferingEventArgs(newCache));
         }
     }

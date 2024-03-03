@@ -8,6 +8,8 @@ namespace Vlc.DotNet.Core.Interops
     {
         public bool TakeSnapshot(VlcMediaPlayerInstance mediaPlayerInstance, uint outputNumber, string filePath, uint width, uint height)
         {
+            if (disposedValue) throw new ObjectDisposedException(GetType().FullName);
+
             if (mediaPlayerInstance == IntPtr.Zero)
                 throw new ArgumentException("Media player instance is not initialized.");
             if(filePath == null)

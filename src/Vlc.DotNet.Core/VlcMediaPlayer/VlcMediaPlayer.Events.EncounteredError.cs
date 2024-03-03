@@ -15,6 +15,8 @@ namespace Vlc.DotNet.Core
 
         public void OnMediaPlayerEncounteredError()
         {
+            if (disposedValue) return;
+
             var del = EncounteredError;
             if (del != null)
                 del(this, new VlcMediaPlayerEncounteredErrorEventArgs());

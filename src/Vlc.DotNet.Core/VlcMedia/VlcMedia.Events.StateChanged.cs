@@ -18,6 +18,8 @@ namespace Vlc.DotNet.Core
 
         public void OnMediaStateChanged(MediaStates state)
         {
+            if (disposedValue) return;
+
             StateChanged?.Invoke(this, new VlcMediaStateChangedEventArgs(state));
         }
     }

@@ -15,6 +15,8 @@ namespace Vlc.DotNet.Core
 
         public void OnMediaPlayerUnmuted()
         {
+            if (disposedValue) return;
+
             Unmuted?.Invoke(this, new EventArgs());
         }
     }

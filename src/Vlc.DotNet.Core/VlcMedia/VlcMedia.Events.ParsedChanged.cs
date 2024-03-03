@@ -18,6 +18,8 @@ namespace Vlc.DotNet.Core
 
         public void OnMediaParsedChanged(int newStatus)
         {
+            if (disposedValue) return;
+
             ParsedChanged?.Invoke(this, new VlcMediaParsedChangedEventArgs(newStatus));
         }
     }

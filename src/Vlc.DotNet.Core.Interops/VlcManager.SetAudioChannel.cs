@@ -7,6 +7,8 @@ namespace Vlc.DotNet.Core.Interops
     {
         public void SetAudioChannel(VlcMediaPlayerInstance mediaPlayerInstance, int channel)
         {
+            if (disposedValue) throw new ObjectDisposedException(GetType().FullName);
+
             if (mediaPlayerInstance == IntPtr.Zero)
                 throw new ArgumentException("Media player instance is not initialized.");
             myLibraryLoader.GetInteropDelegate<SetAudioChannel>().Invoke(mediaPlayerInstance, channel);

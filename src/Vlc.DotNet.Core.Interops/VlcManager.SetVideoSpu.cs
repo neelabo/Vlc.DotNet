@@ -7,6 +7,8 @@ namespace Vlc.DotNet.Core.Interops
     {
         public void SetVideoSpu(VlcMediaPlayerInstance mediaPlayerInstance, TrackDescriptionStructure trackDescription)
         {
+            if (disposedValue) throw new ObjectDisposedException(GetType().FullName);
+
             if (mediaPlayerInstance == IntPtr.Zero)
                 throw new ArgumentException("Media instance is not initialized.");
             SetVideoSpu(mediaPlayerInstance, trackDescription.Id);
@@ -14,6 +16,8 @@ namespace Vlc.DotNet.Core.Interops
 
         public void SetVideoSpu(VlcMediaPlayerInstance mediaPlayerInstance, int id)
         {
+            if (disposedValue) throw new ObjectDisposedException(GetType().FullName);
+
             if (mediaPlayerInstance == IntPtr.Zero)
                 throw new ArgumentException("Media instance is not initialized.");
             myLibraryLoader.GetInteropDelegate<SetVideoSpu>().Invoke(mediaPlayerInstance, id);

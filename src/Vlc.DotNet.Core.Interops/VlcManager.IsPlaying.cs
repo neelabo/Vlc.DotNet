@@ -7,6 +7,8 @@ namespace Vlc.DotNet.Core.Interops
     {
         public bool IsPlaying(VlcMediaPlayerInstance mediaPlayerInstance)
         {
+            if (disposedValue) throw new ObjectDisposedException(GetType().FullName);
+
             if (mediaPlayerInstance == IntPtr.Zero) return false;
             //This seems to be called multiple time
             //Eventually throwing an uncaught exception on close

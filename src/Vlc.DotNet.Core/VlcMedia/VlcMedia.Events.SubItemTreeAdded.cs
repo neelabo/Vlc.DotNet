@@ -18,6 +18,8 @@ namespace Vlc.DotNet.Core
 
         public void OnMediaSubItemTreeAdded(VlcMedia newSubItemAdded)
         {
+            if (disposedValue) return;
+
             SubItemTreeAdded?.Invoke(this, new VlcMediaSubItemTreeAddedEventArgs(newSubItemAdded));
         }
     }

@@ -18,6 +18,8 @@ namespace Vlc.DotNet.Core
 
         public void OnMediaPlayerVideoOutChanged(int newCount)
         {
+            if (disposedValue) return;
+
             VideoOutChanged?.Invoke(this, new VlcMediaPlayerVideoOutChangedEventArgs(newCount));
         }
     }

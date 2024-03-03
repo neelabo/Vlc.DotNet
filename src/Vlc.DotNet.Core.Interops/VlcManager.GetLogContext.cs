@@ -24,6 +24,8 @@ namespace Vlc.DotNet.Core.Interops
         /// <param name="line">The source code file line number storage.</param>
         public void GetLogContext(IntPtr logContext, out string module, out string file, out uint? line)
         {
+            if (disposedValue) throw new ObjectDisposedException(GetType().FullName);
+
             UIntPtr line2;
             IntPtr module2;
             IntPtr file2;

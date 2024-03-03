@@ -18,6 +18,8 @@ namespace Vlc.DotNet.Core
 
         public void OnMediaPlayerEsSelected(MediaPlayerEsChanged eventArgs)
         {
+            if (disposedValue) return;
+
             EsSelected?.Invoke(this, new VlcMediaPlayerEsChangedEventArgs(eventArgs.TrackType, eventArgs.Id));
         }
     }

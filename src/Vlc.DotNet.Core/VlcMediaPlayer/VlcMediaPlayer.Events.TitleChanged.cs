@@ -18,6 +18,8 @@ namespace Vlc.DotNet.Core
 
         public void OnMediaPlayerTitleChanged(int newTitle)
         {
+            if (disposedValue) return;
+
             TitleChanged?.Invoke(this, new VlcMediaPlayerTitleChangedEventArgs(newTitle));
         }
     }

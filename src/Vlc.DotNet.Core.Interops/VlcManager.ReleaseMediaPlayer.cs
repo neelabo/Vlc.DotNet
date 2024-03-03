@@ -7,6 +7,8 @@ namespace Vlc.DotNet.Core.Interops
     {
         public void ReleaseMediaPlayer(VlcMediaPlayerInstance mediaPlayerInstance)
         {
+            //if (disposedValue) throw new ObjectDisposedException(GetType().FullName);
+
             if (mediaPlayerInstance == IntPtr.Zero)
                 return;
             try

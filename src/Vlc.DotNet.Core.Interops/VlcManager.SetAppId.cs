@@ -1,4 +1,5 @@
-﻿using Vlc.DotNet.Core.Interops.Signatures;
+﻿using System;
+using Vlc.DotNet.Core.Interops.Signatures;
 
 namespace Vlc.DotNet.Core.Interops
 {
@@ -13,6 +14,8 @@ namespace Vlc.DotNet.Core.Interops
         /// <param name="icon">application icon name, e.g. "foobar"</param>
         public void SetAppId(string id, string version, string icon)
         {
+            if (disposedValue) throw new ObjectDisposedException(GetType().FullName);
+
             using (var idInterop = Utf8InteropStringConverter.ToUtf8StringHandle(id))
             using (var versionInterop = Utf8InteropStringConverter.ToUtf8StringHandle(version))
             using (var iconInterop = Utf8InteropStringConverter.ToUtf8StringHandle(icon))

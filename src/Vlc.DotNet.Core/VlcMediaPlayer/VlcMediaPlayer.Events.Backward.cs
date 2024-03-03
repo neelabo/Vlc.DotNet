@@ -15,6 +15,8 @@ namespace Vlc.DotNet.Core
 
         public void OnMediaPlayerBackward()
         {
+            if (disposedValue) return;
+
             var del = Backward;
             if (del != null)
                 del(this, new VlcMediaPlayerBackwardEventArgs());

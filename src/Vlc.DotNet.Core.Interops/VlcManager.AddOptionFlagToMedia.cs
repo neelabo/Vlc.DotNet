@@ -7,6 +7,8 @@ namespace Vlc.DotNet.Core.Interops
     {
         public void AddOptionFlagToMedia(VlcMediaInstance mediaInstance, string option, uint flag)
         {
+            if (disposedValue) throw new ObjectDisposedException(GetType().FullName);
+
             if (mediaInstance == IntPtr.Zero)
                 throw new ArgumentException("Media instance is not initialized.");
 

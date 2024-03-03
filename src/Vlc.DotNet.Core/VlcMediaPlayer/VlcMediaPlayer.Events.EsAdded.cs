@@ -18,6 +18,8 @@ namespace Vlc.DotNet.Core
 
         public void OnMediaPlayerEsAdded(MediaPlayerEsChanged eventArgs)
         {
+            if (disposedValue) return;
+
             EsAdded?.Invoke(this, new VlcMediaPlayerEsChangedEventArgs(eventArgs.TrackType, eventArgs.Id));
         }
     }

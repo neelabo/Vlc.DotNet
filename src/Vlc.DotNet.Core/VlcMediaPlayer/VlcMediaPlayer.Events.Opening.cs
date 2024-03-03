@@ -15,6 +15,8 @@ namespace Vlc.DotNet.Core
 
         public void OnMediaPlayerOpening()
         {
+            if (disposedValue) return;
+
             var del = Opening;
             if (del != null)
                 del(this, new VlcMediaPlayerOpeningEventArgs());

@@ -7,6 +7,8 @@ namespace Vlc.DotNet.Core.Interops
     {
         public void AddOptionToMedia(VlcMediaInstance mediaInstance, string option)
         {
+            if (disposedValue) throw new ObjectDisposedException(GetType().FullName);
+
             if (mediaInstance == IntPtr.Zero)
                 throw new ArgumentException("Media instance is not initialized.");
             if (string.IsNullOrEmpty(option))
@@ -20,6 +22,8 @@ namespace Vlc.DotNet.Core.Interops
 
         public void AddOptionToMedia(VlcMediaInstance mediaInstance, string[] options)
         {
+            if (disposedValue) throw new ObjectDisposedException(GetType().FullName);
+
             if (mediaInstance == IntPtr.Zero)
                 throw new ArgumentException("Media instance is not initialized.");
             options = options ?? new string[0];

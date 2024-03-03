@@ -13,6 +13,8 @@ namespace Vlc.DotNet.Core.Interops
 
         public void SetLog(LogCallback callback)
         {
+            if (disposedValue) throw new ObjectDisposedException(GetType().FullName);
+
             if (callback == null)
             {
                 throw new ArgumentException("Callback for log is not initialized.");

@@ -9,6 +9,8 @@ namespace Vlc.DotNet.Core.Interops
     {
         public IEnumerable<AudioOutputDevice> GetAudioOutputDeviceList(string outputName)
         {
+            if (disposedValue) throw new ObjectDisposedException(GetType().FullName);
+
             using (var outputNameHandle = Utf8InteropStringConverter.ToUtf8StringHandle(outputName))
             {
                 var deviceList = myLibraryLoader.GetInteropDelegate<GetAudioOutputDeviceList>().Invoke(this.myVlcInstance, outputNameHandle);

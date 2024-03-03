@@ -7,6 +7,8 @@ namespace Vlc.DotNet.Core.Interops
     {
         public void Free(IntPtr instance)
         {
+            //if (disposedValue) throw new ObjectDisposedException(GetType().FullName);
+
             if (instance == IntPtr.Zero)
                 return;
             myLibraryLoader.GetInteropDelegate<Free>().Invoke(instance);

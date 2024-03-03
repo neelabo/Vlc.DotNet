@@ -1,4 +1,5 @@
-﻿using Vlc.DotNet.Core.Interops.Signatures;
+﻿using System;
+using Vlc.DotNet.Core.Interops.Signatures;
 
 namespace Vlc.DotNet.Core.Interops
 {
@@ -12,6 +13,8 @@ namespace Vlc.DotNet.Core.Interops
         /// <param name="http">HTTP User Agent, e.g. "FooBar/1.2.3 Python/2.6.0"</param>
         public void SetUserAgent(string name, string http)
         {
+            if (disposedValue) throw new ObjectDisposedException(GetType().FullName);
+
             using (var nameInterop = Utf8InteropStringConverter.ToUtf8StringHandle(name))
             using (var httpInterop = Utf8InteropStringConverter.ToUtf8StringHandle(http))
             {

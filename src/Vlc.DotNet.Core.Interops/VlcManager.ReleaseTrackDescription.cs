@@ -7,6 +7,10 @@ namespace Vlc.DotNet.Core.Interops
     {
         public void ReleaseTrackDescription(IntPtr trackDescription)
         {
+            //if (disposedValue) throw new ObjectDisposedException(GetType().FullName);
+
+            if (trackDescription == IntPtr.Zero) return;
+
             myLibraryLoader.GetInteropDelegate<ReleaseTrackDescription>().Invoke(trackDescription);
         }
     }

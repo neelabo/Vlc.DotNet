@@ -18,6 +18,8 @@ namespace Vlc.DotNet.Core
 
         public void OnMediaMetaChanged(MediaMetadatas metaType)
         {
+            if (disposedValue) return;
+
             MetaChanged?.Invoke(this, new VlcMediaMetaChangedEventArgs(metaType));
         }
     }

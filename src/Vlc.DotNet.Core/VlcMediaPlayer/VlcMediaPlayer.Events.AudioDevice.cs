@@ -18,6 +18,8 @@ namespace Vlc.DotNet.Core
 
         public void OnMediaPlayerAudioDevice(string audioDevice)
         {
+            if (disposedValue) return;
+
             AudioDevice?.Invoke(this, new VlcMediaPlayerAudioDeviceEventArgs(audioDevice));
         }
     }

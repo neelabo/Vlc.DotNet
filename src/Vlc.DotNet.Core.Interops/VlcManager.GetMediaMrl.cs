@@ -8,6 +8,8 @@ namespace Vlc.DotNet.Core.Interops
     {
         public string GetMediaMrl(VlcMediaInstance mediaInstance)
         {
+            if (disposedValue) throw new ObjectDisposedException(GetType().FullName);
+
             if (mediaInstance == IntPtr.Zero)
                 throw new ArgumentException("Media instance is not initialized.");
             var ptr = myLibraryLoader.GetInteropDelegate<GetMediaMrl>().Invoke(mediaInstance);

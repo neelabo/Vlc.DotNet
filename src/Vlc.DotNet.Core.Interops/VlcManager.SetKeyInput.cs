@@ -13,6 +13,8 @@ namespace Vlc.DotNet.Core.Interops
         /// <remarks>Must be called before the stream has started playing. This is not applicable to the WPF control.</remarks>
         public void SetKeyInput(VlcMediaPlayerInstance mediaPlayerInstance, bool on)
         {
+            if (disposedValue) throw new ObjectDisposedException(GetType().FullName);
+
             if (mediaPlayerInstance == IntPtr.Zero)
                 throw new ArgumentException("Media player instance is not initialized.");
             myLibraryLoader.GetInteropDelegate<SetKeyInput>().Invoke(mediaPlayerInstance, on ? 1u : 0u);

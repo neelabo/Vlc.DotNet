@@ -7,6 +7,8 @@ namespace Vlc.DotNet.Core.Interops
     {
         public void SetTime(IntPtr mediaInstance, long timeInMs)
         {
+            if (disposedValue) throw new ObjectDisposedException(GetType().FullName);
+
             if (mediaInstance == IntPtr.Zero)
                 throw new ArgumentException("Media instance is not initialized.");
             myLibraryLoader.GetInteropDelegate<SetTime>().Invoke(mediaInstance, timeInMs);

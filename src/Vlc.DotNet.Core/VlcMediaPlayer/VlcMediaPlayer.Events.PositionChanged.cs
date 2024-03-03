@@ -18,6 +18,8 @@ namespace Vlc.DotNet.Core
 
         public void OnMediaPlayerPositionChanged(float newPosition)
         {
+            if (disposedValue) return;
+
             PositionChanged?.Invoke(this, new VlcMediaPlayerPositionChangedEventArgs(newPosition));
         }
     }

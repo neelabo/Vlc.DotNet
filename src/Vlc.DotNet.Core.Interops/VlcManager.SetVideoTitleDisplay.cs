@@ -13,6 +13,8 @@ namespace Vlc.DotNet.Core.Interops
         /// <param name="timeout">title display timeout in milliseconds (ignored if libvlc_position_disable)</param>
         public void SetVideoTitleDisplay(IntPtr mediaPlayerInstance, Position position, int timeout)
         {
+            if (disposedValue) throw new ObjectDisposedException(GetType().FullName);
+
             if (mediaPlayerInstance == IntPtr.Zero)
                 throw new ArgumentException("Media player instance is not initialized.");
             myLibraryLoader.GetInteropDelegate<SetVideoTitleDisplay>().Invoke(mediaPlayerInstance, position, timeout);

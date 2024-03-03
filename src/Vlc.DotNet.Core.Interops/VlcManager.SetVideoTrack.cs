@@ -7,6 +7,8 @@ namespace Vlc.DotNet.Core.Interops
     {
         public void SetVideoTrack(VlcMediaPlayerInstance mediaPlayerInstance, TrackDescriptionStructure trackDescription)
         {
+            if (disposedValue) throw new ObjectDisposedException(GetType().FullName);
+
             if (mediaPlayerInstance == IntPtr.Zero)
                 throw new ArgumentException("Media player instance is not initialized.");
             SetVideoTrack(mediaPlayerInstance, trackDescription.Id);
@@ -14,6 +16,8 @@ namespace Vlc.DotNet.Core.Interops
 
         public void SetVideoTrack(VlcMediaPlayerInstance mediaPlayerInstance, int id)
         {
+            if (disposedValue) throw new ObjectDisposedException(GetType().FullName);
+
             if (mediaPlayerInstance == IntPtr.Zero)
                 throw new ArgumentException("Media player instance is not initialized.");
             myLibraryLoader.GetInteropDelegate<SetVideoTrack>().Invoke(mediaPlayerInstance, id);

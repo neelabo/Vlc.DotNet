@@ -67,6 +67,7 @@ namespace Vlc.DotNet.Wpf
 
             private set
             {
+                if (disposedValue) return;
                 if (!Object.ReferenceEquals(this.videoSource, value))
                 {
                     this.videoSource = value;
@@ -83,13 +84,16 @@ namespace Vlc.DotNet.Wpf
         /// <summary>
         /// Defines if <see cref="VideoSource"/> pixel format is <see cref="PixelFormats.Bgr32"/> or <see cref="PixelFormats.Bgra32"/>
         /// </summary>
-        public bool IsAlphaChannelEnabled { get
+        public bool IsAlphaChannelEnabled
+        {
+            get
             {
                 return this.isAlphaChannelEnabled;
             }
 
             set
             {
+                if (disposedValue) return;
                 if (!playerCreated)
                     this.isAlphaChannelEnabled = value;
                 else
@@ -104,6 +108,8 @@ namespace Vlc.DotNet.Wpf
         /// <param name="vlcMediaPlayerOptions">The initialization options to be given to libvlc</param>
         public void CreatePlayer(DirectoryInfo vlcLibDirectory, params string[] vlcMediaPlayerOptions)
         {
+            if (disposedValue) throw new ObjectDisposedException(GetType().FullName);
+
             var directoryInfo = vlcLibDirectory ?? throw new ArgumentNullException(nameof(vlcLibDirectory));
 
             this.MediaPlayer = new VlcMediaPlayer(directoryInfo, vlcMediaPlayerOptions);
@@ -154,7 +160,7 @@ namespace Vlc.DotNet.Wpf
 
             var pixelFormat = IsAlphaChannelEnabled ? PixelFormats.Bgra32 : PixelFormats.Bgr32;
             FourCCConverter.ToFourCC("RV32", chroma);
-            
+
             //Correct video width and height according to TrackInfo
             var md = MediaPlayer.GetMedia();
             foreach (MediaTrack track in md.Tracks)
@@ -277,7 +283,7 @@ namespace Vlc.DotNet.Wpf
         }
 
         #region IDisposable Support
-        private bool disposedValue = false;
+        private bool disposedValue;
 
         /// <summary>
         /// Disposes the control.
@@ -287,6 +293,9 @@ namespace Vlc.DotNet.Wpf
         {
             if (!disposedValue)
             {
+                if (disposing)
+                {
+                }
                 disposedValue = true;
                 this.MediaPlayer?.Dispose();
                 this.MediaPlayer = null;
@@ -299,13 +308,13 @@ namespace Vlc.DotNet.Wpf
         /// </summary>
         ~VlcVideoSourceProvider()
         {
-            Dispose(false);
+            Dispose(disposing: false);
         }
 
         /// <inheritdoc />
         public void Dispose()
         {
-            Dispose(true);
+            Dispose(disposing: true);
             GC.SuppressFinalize(this);
         }
         #endregion

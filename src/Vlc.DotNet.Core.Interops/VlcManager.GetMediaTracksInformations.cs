@@ -8,6 +8,8 @@ namespace Vlc.DotNet.Core.Interops
         [Obsolete("Use GetMediaTracks instead")]
         public MediaTrackInfosStructure[] GetMediaTracksInformations(VlcMediaInstance mediaInstance)
         {
+            if (disposedValue) throw new ObjectDisposedException(GetType().FullName);
+
             if (mediaInstance == IntPtr.Zero)
                 throw new ArgumentException("Media instance is not initialized.");
             IntPtr fullBuffer;

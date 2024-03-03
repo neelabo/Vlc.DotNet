@@ -16,6 +16,8 @@ namespace Vlc.DotNet.Core
 
         public void OnMediaPlayerUncorked()
         {
+            if (disposedValue) return;
+
             Uncorked?.Invoke(this, new EventArgs());
         }
     }

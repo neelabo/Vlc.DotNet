@@ -8,6 +8,8 @@ namespace Vlc.DotNet.Core
 {
     public sealed partial class VlcMediaPlayer : IDisposable
     {
+        private bool disposedValue;
+
         private readonly VlcMediaPlayerInstance myMediaPlayerInstance;
         private VlcMedia myCurrentMedia;
 
@@ -51,6 +53,8 @@ namespace Vlc.DotNet.Core
         /// <param name="icon">application icon name, e.g. "foobar"</param>
         public void SetAppId(string id, string version, string icon)
         {
+            if (disposedValue) return;
+
             this.Manager.SetAppId(id, version, icon);
         }
 
@@ -62,66 +66,97 @@ namespace Vlc.DotNet.Core
         /// <param name="http">HTTP User Agent, e.g. "FooBar/1.2.3 Python/2.6.0"</param>
         public void SetUserAgent(string name, string http)
         {
+            if (disposedValue) return;
+
             this.Manager.SetUserAgent(name, http);
         }
 
         public IntPtr VideoHostControlHandle
         {
-            get { return Manager.GetMediaPlayerVideoHostHandle(myMediaPlayerInstance); }
-            set { Manager.SetMediaPlayerVideoHostHandle(myMediaPlayerInstance, value); }
+            get
+            {
+                if (disposedValue) return IntPtr.Zero;
+                return Manager.GetMediaPlayerVideoHostHandle(myMediaPlayerInstance);
+            }
+            set
+            {
+                if (disposedValue) return;
+                Manager.SetMediaPlayerVideoHostHandle(myMediaPlayerInstance, value);
+            }
         }
 
         public int SetAudioOutput(string outputName)
         {
-            return this.Manager.SetAudioOutput(myMediaPlayerInstance, outputName);
-        }
+            if (disposedValue) return default;
 
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
+            return this.Manager.SetAudioOutput(myMediaPlayerInstance, outputName);
         }
 
         private void Dispose(bool disposing)
         {
-            if (myMediaPlayerInstance == IntPtr.Zero)
-                return;
-            UnregisterEvents();
-            if (IsPlaying())
-                Stop();
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                }
 
-            myCurrentMedia?.Dispose();
-            myMediaPlayerInstance.Dispose();
-            Manager.Dispose();
+                if (myMediaPlayerInstance == IntPtr.Zero)
+                    return;
+                UnregisterEvents();
+                if (IsPlaying())
+                    Stop();
+
+                myCurrentMedia?.Dispose();
+                myMediaPlayerInstance.Dispose();
+                Manager.Dispose();
+
+                disposedValue = true;
+            }
         }
 
         ~VlcMediaPlayer()
         {
-            Dispose(false);
+            Dispose(disposing: false);
+        }
+
+        public void Dispose()
+        {
+            Dispose(disposing: true);
+            GC.SuppressFinalize(this);
         }
 
         public VlcMedia SetMedia(FileInfo file, params string[] options)
         {
+            if (disposedValue) return null;
+
             return SetMedia(new VlcMedia(this, file, options));
         }
 
         public VlcMedia SetMedia(Uri uri, params string[] options)
         {
+            if (disposedValue) return null;
+
             return SetMedia(new VlcMedia(this, uri, options));
         }
 
         public VlcMedia SetMedia(string mrl, params string[] options)
         {
+            if (disposedValue) return null;
+
             return SetMedia(new VlcMedia(this, mrl, options));
         }
 
         public VlcMedia SetMedia(Stream stream, params string[] options)
         {
+            if (disposedValue) return null;
+
             return SetMedia(new VlcMedia(this, stream, options));
         }
 
         public void ResetMedia()
         {
+            if (disposedValue) return;
+
             SetMedia((VlcMedia)null);
         }
 
@@ -147,6 +182,8 @@ namespace Vlc.DotNet.Core
 
         public void Play()
         {
+            if (disposedValue) return;
+
             Manager.Play(myMediaPlayerInstance);
         }
 
@@ -157,6 +194,8 @@ namespace Vlc.DotNet.Core
         /// <param name="options">The options to be given</param>
         public void Play(FileInfo file, params string[] options)
         {
+            if (disposedValue) return;
+
             this.SetMedia(file, options);
             this.Play();
         }
@@ -168,6 +207,8 @@ namespace Vlc.DotNet.Core
         /// <param name="options">The options to be given</param>
         public void Play(Uri uri, params string[] options)
         {
+            if (disposedValue) return;
+
             this.SetMedia(uri, options);
             this.Play();
         }
@@ -179,6 +220,8 @@ namespace Vlc.DotNet.Core
         /// <param name="options">The options to be given</param>
         public void Play(string mrl, params string[] options)
         {
+            if (disposedValue) return;
+
             this.SetMedia(mrl, options);
             this.Play();
         }
@@ -190,6 +233,8 @@ namespace Vlc.DotNet.Core
         /// <param name="options">The options to be given</param>
         public void Play(Stream stream, params string[] options)
         {
+            if (disposedValue) return;
+
             this.SetMedia(stream, options);
             this.Play();
         }
@@ -199,6 +244,8 @@ namespace Vlc.DotNet.Core
         /// </summary>
         public void Pause()
         {
+            if (disposedValue) return;
+
             Manager.Pause(myMediaPlayerInstance);
         }
 
@@ -208,32 +255,46 @@ namespace Vlc.DotNet.Core
         /// <param name="doPause">If set to <c>true</c>, pauses the media, resumes if <c>false</c></param>
         public void SetPause(bool doPause)
         {
+            if (disposedValue) return;
+
             Manager.SetPause(myMediaPlayerInstance, doPause);
         }
 
         public void Stop()
         {
+            if (disposedValue) return;
+
             Manager.Stop(myMediaPlayerInstance);
         }
 
         public bool IsPlaying()
         {
+            if (disposedValue) return false;
+
             return Manager.IsPlaying(myMediaPlayerInstance);
         }
 
         public bool IsPausable()
         {
+            if (disposedValue) return false;
+
             return Manager.IsPausable(myMediaPlayerInstance);
         }
 
         public void NextFrame()
         {
+            if (disposedValue) return;
+
             Manager.NextFrame(myMediaPlayerInstance);
         }
 
         public IEnumerable<FilterModuleDescription> GetAudioFilters()
         {
+            if (disposedValue) return Array.Empty< FilterModuleDescription>();
+
             var module = Manager.GetAudioFilterList();
+            if (module == IntPtr.Zero)
+                return Array.Empty< FilterModuleDescription>();
             ModuleDescriptionStructure nextModule = MarshalHelper.PtrToStructure<ModuleDescriptionStructure>(module);
             var result = GetSubFilter(nextModule);
             if (module != IntPtr.Zero)
@@ -243,6 +304,8 @@ namespace Vlc.DotNet.Core
 
         private List<FilterModuleDescription> GetSubFilter(ModuleDescriptionStructure module)
         {
+            if (disposedValue) return new List<FilterModuleDescription>();
+
             var result = new List<FilterModuleDescription>();
             var filterModule = FilterModuleDescription.GetFilterModuleDescription(module);
             if (filterModule == null)
@@ -262,7 +325,11 @@ namespace Vlc.DotNet.Core
 
         public IEnumerable<FilterModuleDescription> GetVideoFilters()
         {
+            if (disposedValue) return Array.Empty<FilterModuleDescription>();
+
             var module = Manager.GetVideoFilterList();
+            if (module == IntPtr.Zero)
+                return Array.Empty<FilterModuleDescription>();
             ModuleDescriptionStructure nextModule = MarshalHelper.PtrToStructure<ModuleDescriptionStructure>(module);
             var result = GetSubFilter(nextModule);
             if (module != IntPtr.Zero)
@@ -272,44 +339,78 @@ namespace Vlc.DotNet.Core
 
         public float Position
         {
-            get { return Manager.GetMediaPosition(myMediaPlayerInstance); }
-            set { Manager.SetMediaPosition(myMediaPlayerInstance, value); }
+            get
+            {
+                if (disposedValue) return default;
+                return Manager.GetMediaPosition(myMediaPlayerInstance);
+            }
+            set
+            {
+                if (disposedValue) return;
+                Manager.SetMediaPosition(myMediaPlayerInstance, value);
+            }
         }
 
         public bool CouldPlay
         {
-            get { return Manager.CouldPlay(myMediaPlayerInstance); }
+            get
+            { 
+                if (disposedValue) return false;
+                return Manager.CouldPlay(myMediaPlayerInstance);
+            }
         }
 
         public IChapterManagement Chapters { get; private set; }
 
         public float Rate
         {
-            get { return Manager.GetRate(myMediaPlayerInstance); }
-            set { Manager.SetRate(myMediaPlayerInstance, value); }
+            get
+            {
+                if (disposedValue) return default;
+                return Manager.GetRate(myMediaPlayerInstance);
+            }
+            set
+            {
+                if (disposedValue) return;
+                Manager.SetRate(myMediaPlayerInstance, value);
+            }
         }
 
         public MediaStates State
         {
-            get { return Manager.GetMediaPlayerState(myMediaPlayerInstance); }
+            get
+            {
+                if (disposedValue) return default;
+                return Manager.GetMediaPlayerState(myMediaPlayerInstance);
+            }
         }
 
         public float FramesPerSecond
         {
-            get { return Manager.GetFramesPerSecond(myMediaPlayerInstance); }
+            get
+            {
+                if (disposedValue) return default;
+                return Manager.GetFramesPerSecond(myMediaPlayerInstance);
+            }
         }
 
         public bool IsSeekable
         {
-            get { return Manager.IsSeekable(myMediaPlayerInstance); }
+            get
+            {
+                if (disposedValue) return false;
+                return Manager.IsSeekable(myMediaPlayerInstance);
+            }
         }
 
         public void Navigate(NavigateModes navigateMode)
         {
+            if (disposedValue) return;
+            
             Manager.Navigate(myMediaPlayerInstance, navigateMode);
         }
 
-        public ISubTitlesManagement SubTitles { get;  }
+        public ISubTitlesManagement SubTitles { get; }
 
         public IVideoManagement Video { get; }
 
@@ -321,33 +422,59 @@ namespace Vlc.DotNet.Core
 
         public long Length
         {
-            get { return Manager.GetLength(myMediaPlayerInstance); }
+            get
+            {
+                if (disposedValue) return default;
+                return Manager.GetLength(myMediaPlayerInstance);
+            }
         }
 
         public long Time
         {
-            get { return Manager.GetTime(myMediaPlayerInstance); }
-            set { Manager.SetTime(myMediaPlayerInstance, value); }
+            get
+            {
+                if (disposedValue) return default;
+                return Manager.GetTime(myMediaPlayerInstance);
+            }
+            set
+            {
+                if (disposedValue) return;
+                Manager.SetTime(myMediaPlayerInstance, value);
+            }
         }
 
         public int Spu
         {
-            get { return Manager.GetVideoSpu(myMediaPlayerInstance); }
-            set { Manager.SetVideoSpu(myMediaPlayerInstance, value); }
+            get
+            {
+                if (disposedValue) return default;
+                return Manager.GetVideoSpu(myMediaPlayerInstance);
+            }
+            set
+            {
+                if (disposedValue) return;
+                Manager.SetVideoSpu(myMediaPlayerInstance, value);
+            }
         }
 
         public bool TakeSnapshot(FileInfo file)
         {
+            if (disposedValue) return false;
+
             return TakeSnapshot(file, 0, 0);
         }
 
         public bool TakeSnapshot(FileInfo file, uint width, uint height)
         {
+            if (disposedValue) return false;
+
             return TakeSnapshot(0, file.FullName, width, height);
         }
 
         public void SetVideoTitleDisplay(Position position, int timeout)
         {
+            if (disposedValue) return;
+
             Manager.SetVideoTitleDisplay(myMediaPlayerInstance, position, timeout);
         }
 
@@ -365,6 +492,8 @@ namespace Vlc.DotNet.Core
         /// </remarks>
         public bool TakeSnapshot(uint outputNumber, string file, uint width, uint height)
         {
+            if (disposedValue) return false;
+
             return Manager.TakeSnapshot(myMediaPlayerInstance, outputNumber, file, width, height);
         }
 

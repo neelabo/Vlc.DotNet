@@ -25,6 +25,8 @@ namespace Vlc.DotNet.Core.Interops
 
         public VlcMediaInstance CreateNewMediaFromStream(Stream stream)
         {
+            if (disposedValue) throw new ObjectDisposedException(GetType().FullName);
+
             if (stream == null)
             {
                 throw new ArgumentNullException(nameof(stream));

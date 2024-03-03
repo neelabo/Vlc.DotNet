@@ -18,6 +18,8 @@ namespace Vlc.DotNet.Core
 
         public void OnMediaPlayerSeekableChanged(int newSeekable)
         {
+            if (disposedValue) return;
+
             SeekableChanged?.Invoke(this, new VlcMediaPlayerSeekableChangedEventArgs(newSeekable));
         }
     }

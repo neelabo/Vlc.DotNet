@@ -54,6 +54,8 @@ namespace Vlc.DotNet.Core
 
         private void OnLogInternal(IntPtr data, VlcLogLevel level, IntPtr ctx, string format, IntPtr args)
         {
+            if (disposedValue) return;
+
             if (this.log != null)
             {
                 // Original source for va_list handling: https://stackoverflow.com/a/37629480/2663813
@@ -80,6 +82,7 @@ namespace Vlc.DotNet.Core
 #if NET6_0_OR_GREATER
                 Task.Run(() => 
                 {
+                    if (disposedValue) return;
                     if(this.log != null)
                         this.log(this.myMediaPlayerInstance, new VlcMediaPlayerLogEventArgs(level, formattedDecodedMessage, module, file, line));
                 });

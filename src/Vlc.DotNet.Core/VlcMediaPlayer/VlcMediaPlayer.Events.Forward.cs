@@ -15,6 +15,8 @@ namespace Vlc.DotNet.Core
 
         public void OnMediaPlayerForward()
         {
+            if (disposedValue) return;
+
             var del = Forward;
             if (del != null)
                 del(this, new VlcMediaPlayerForwardEventArgs());

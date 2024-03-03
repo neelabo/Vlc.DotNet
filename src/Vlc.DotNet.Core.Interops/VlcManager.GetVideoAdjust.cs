@@ -7,6 +7,8 @@ namespace Vlc.DotNet.Core.Interops
     {
         public bool GetVideoAdjustEnabled(VlcMediaPlayerInstance mediaPlayerInstance)
         {
+            if (disposedValue) throw new ObjectDisposedException(GetType().FullName);
+
             if (mediaPlayerInstance == IntPtr.Zero)
                 throw new ArgumentException("Media player instance is not initialized.");
             return myLibraryLoader.GetInteropDelegate<GetVideoAdjustInteger>().Invoke(mediaPlayerInstance, VideoAdjustOptions.Enable) == 1;
@@ -14,6 +16,8 @@ namespace Vlc.DotNet.Core.Interops
 
         public float GetVideoAdjustContrast(VlcMediaPlayerInstance mediaPlayerInstance)
         {
+            if (disposedValue) throw new ObjectDisposedException(GetType().FullName);
+
             if (mediaPlayerInstance == IntPtr.Zero)
                 throw new ArgumentException("Media player instance is not initialized.");
             return myLibraryLoader.GetInteropDelegate<GetVideoAdjustFloat>().Invoke(mediaPlayerInstance, VideoAdjustOptions.Contrast);
@@ -21,6 +25,8 @@ namespace Vlc.DotNet.Core.Interops
 
         public float GetVideoAdjustBrightness(VlcMediaPlayerInstance mediaPlayerInstance)
         {
+            if (disposedValue) throw new ObjectDisposedException(GetType().FullName);
+
             if (mediaPlayerInstance == IntPtr.Zero)
                 throw new ArgumentException("Media player instance is not initialized.");
             return myLibraryLoader.GetInteropDelegate<GetVideoAdjustFloat>().Invoke(mediaPlayerInstance, VideoAdjustOptions.Brightness);
@@ -28,6 +34,8 @@ namespace Vlc.DotNet.Core.Interops
 
         public float GetVideoAdjustHue(VlcMediaPlayerInstance mediaPlayerInstance)
         {
+            if (disposedValue) throw new ObjectDisposedException(GetType().FullName);
+
             if (mediaPlayerInstance == IntPtr.Zero)
                 throw new ArgumentException("Media player instance is not initialized.");
             return myLibraryLoader.GetInteropDelegate<GetVideoAdjustFloat>().Invoke(mediaPlayerInstance, VideoAdjustOptions.Hue);
@@ -35,6 +43,8 @@ namespace Vlc.DotNet.Core.Interops
 
         public float GetVideoAdjustSaturation(VlcMediaPlayerInstance mediaPlayerInstance)
         {
+            if (disposedValue) throw new ObjectDisposedException(GetType().FullName);
+
             if (mediaPlayerInstance == IntPtr.Zero)
                 throw new ArgumentException("Media player instance is not initialized.");
             return myLibraryLoader.GetInteropDelegate<GetVideoAdjustFloat>().Invoke(mediaPlayerInstance, VideoAdjustOptions.Saturation);
@@ -42,6 +52,8 @@ namespace Vlc.DotNet.Core.Interops
 
         public float GetVideoAdjustGamma(VlcMediaPlayerInstance mediaPlayerInstance)
         {
+            if (disposedValue) throw new ObjectDisposedException(GetType().FullName);
+
             if (mediaPlayerInstance == IntPtr.Zero)
                 throw new ArgumentException("Media player instance is not initialized.");
             return myLibraryLoader.GetInteropDelegate<GetVideoAdjustFloat>().Invoke(mediaPlayerInstance, VideoAdjustOptions.Gamma);

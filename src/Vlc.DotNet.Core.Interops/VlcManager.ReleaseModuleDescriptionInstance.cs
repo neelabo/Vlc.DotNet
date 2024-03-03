@@ -7,6 +7,10 @@ namespace Vlc.DotNet.Core.Interops
     {
         public void ReleaseModuleDescriptionInstance(IntPtr moduleDescriptionInstance)
         {
+            //if (disposedValue) throw new ObjectDisposedException(GetType().FullName);
+
+            if (moduleDescriptionInstance == IntPtr.Zero) return;
+
             myLibraryLoader.GetInteropDelegate<ReleaseModuleDescription>().Invoke(moduleDescriptionInstance);
         }
     }

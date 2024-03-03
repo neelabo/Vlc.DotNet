@@ -19,6 +19,8 @@ namespace Vlc.DotNet.Core
 
         public void OnMediaPlayerSnapshotTaken(string fileName)
         {
+            if (disposedValue) return;
+
             SnapshotTaken?.Invoke(this, new VlcMediaPlayerSnapshotTakenEventArgs(fileName));
         }
     }

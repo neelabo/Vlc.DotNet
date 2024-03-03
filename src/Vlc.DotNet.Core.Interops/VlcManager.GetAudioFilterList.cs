@@ -7,6 +7,8 @@ namespace Vlc.DotNet.Core.Interops
     {
         public IntPtr GetAudioFilterList()
         {
+            if (disposedValue) throw new ObjectDisposedException(GetType().FullName);
+
             return myLibraryLoader.GetInteropDelegate<GetAudioFilterList>().Invoke(myVlcInstance);
         }
     }

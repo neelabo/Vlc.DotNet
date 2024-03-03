@@ -7,6 +7,8 @@ namespace Vlc.DotNet.Core.Interops
     {
         public int AttachEvent(VlcEventManagerInstance eventManagerInstance, EventTypes eventType, EventCallback callback)
         {
+            if (disposedValue) throw new ObjectDisposedException(GetType().FullName);
+
             if (eventManagerInstance == IntPtr.Zero)
                 throw new ArgumentException("Event manager instance is not initialized.");
             if (callback == null)

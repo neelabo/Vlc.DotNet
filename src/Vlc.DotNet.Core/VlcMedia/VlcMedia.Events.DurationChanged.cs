@@ -17,6 +17,8 @@ namespace Vlc.DotNet.Core
 
         public void OnMediaDurationChanged(long newDuration)
         {
+            if (disposedValue) return;
+
             DurationChanged?.Invoke(this, new VlcMediaDurationChangedEventArgs(newDuration));
         }
     }

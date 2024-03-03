@@ -7,6 +7,8 @@ namespace Vlc.DotNet.Core.Interops
     {
         public VlcMediaEventManagerInstance GetMediaEventManager(VlcMediaInstance mediaInstance)
         {
+            if (disposedValue) throw new ObjectDisposedException(GetType().FullName);
+
             if (mediaInstance == IntPtr.Zero)
                 throw new ArgumentException("Media instance is not initialized.");
             return new VlcMediaEventManagerInstance(this, myLibraryLoader.GetInteropDelegate<GetMediaEventManager>().Invoke(mediaInstance));

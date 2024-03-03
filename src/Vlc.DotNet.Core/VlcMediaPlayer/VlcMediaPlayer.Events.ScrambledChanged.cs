@@ -18,6 +18,8 @@ namespace Vlc.DotNet.Core
 
         public void OnMediaPlayerScrambledChanged(int newScrambled)
         {
+            if (disposedValue) return;
+
             ScrambledChanged?.Invoke(this, new VlcMediaPlayerScrambledChangedEventArgs(newScrambled));
         }
     }

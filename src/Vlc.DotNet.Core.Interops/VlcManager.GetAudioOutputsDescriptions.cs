@@ -8,6 +8,8 @@ namespace Vlc.DotNet.Core.Interops
     {
         public List<AudioOutputDescriptionStructure> GetAudioOutputsDescriptions()
         {
+            if (disposedValue) throw new ObjectDisposedException(GetType().FullName);
+
             var first = myLibraryLoader.GetInteropDelegate<GetAudioOutputsDescriptions>().Invoke(myVlcInstance);
             var result = new List<AudioOutputDescriptionStructure>();
 

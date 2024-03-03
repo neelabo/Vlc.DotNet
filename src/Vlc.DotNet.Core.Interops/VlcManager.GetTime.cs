@@ -7,6 +7,8 @@ namespace Vlc.DotNet.Core.Interops
     {
         public long GetTime(IntPtr mediaInstance)
         {
+            if (disposedValue) throw new ObjectDisposedException(GetType().FullName);
+
             if (mediaInstance == IntPtr.Zero)
                 throw new ArgumentException("Media player instance is not initialized.");
             return myLibraryLoader.GetInteropDelegate<GetTime>().Invoke(mediaInstance);

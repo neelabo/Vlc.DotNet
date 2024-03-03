@@ -8,6 +8,8 @@ namespace Vlc.DotNet.Core.Interops
 {
     public sealed partial class VlcManager : IDisposable
     {
+        private bool disposedValue;
+
         private readonly VlcLibraryLoader myLibraryLoader;
         private readonly VlcInstance myVlcInstance;
 
@@ -54,14 +56,27 @@ namespace Vlc.DotNet.Core.Interops
             }
         }
 
+        private void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    if (this.dialogCallbacksPointer != IntPtr.Zero)
+                    {
+                        Marshal.FreeHGlobal(this.dialogCallbacksPointer);
+                    }
+                    myVlcInstance.Dispose();
+                    VlcLibraryLoader.ReleaseLoader(this.myLibraryLoader);
+                }
+                disposedValue = true;
+            }
+        }
+
         public void Dispose()
         {
-            if (this.dialogCallbacksPointer != IntPtr.Zero)
-            {
-                Marshal.FreeHGlobal(this.dialogCallbacksPointer);
-            }
-            myVlcInstance.Dispose();
-            VlcLibraryLoader.ReleaseLoader(this.myLibraryLoader);
+            Dispose(disposing: true);
+            GC.SuppressFinalize(this);
         }
     }
 }

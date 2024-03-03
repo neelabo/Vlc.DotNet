@@ -16,6 +16,8 @@ namespace Vlc.DotNet.Core
 
         public void OnMediaFreed()
         {
+            if (disposedValue) return;
+
             Freed?.Invoke(this, new VlcMediaFreedEventArgs());
         }
     }

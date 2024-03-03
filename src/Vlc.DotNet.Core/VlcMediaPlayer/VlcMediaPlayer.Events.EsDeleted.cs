@@ -18,6 +18,8 @@ namespace Vlc.DotNet.Core
 
         public void OnMediaPlayerEsDeleted(MediaPlayerEsChanged eventArgs)
         {
+            if (disposedValue) return;
+
             EsDeleted?.Invoke(this, new VlcMediaPlayerEsChangedEventArgs(eventArgs.TrackType, eventArgs.Id));
         }
     }

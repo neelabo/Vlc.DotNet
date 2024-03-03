@@ -35,6 +35,8 @@ namespace Vlc.DotNet.Core
         /// </param>
         public void SetVideoCallbacks(LockVideoCallback lockVideo, UnlockVideoCallback unlockVideo, DisplayVideoCallback display, IntPtr userData)
         {
+            if (disposedValue) return;
+
             if (lockVideo == null)
             {
                 throw new ArgumentNullException(nameof(lockVideo));
@@ -55,6 +57,8 @@ namespace Vlc.DotNet.Core
         /// <param name="cleanup">Callback to release any allocated resources (or NULL)</param>
         public void SetVideoFormatCallbacks(VideoFormatCallback videoFormat, CleanupVideoCallback cleanup)
         {
+            if (disposedValue) return;
+
             if (videoFormat == null)
             {
                 throw new ArgumentNullException(nameof(videoFormat));

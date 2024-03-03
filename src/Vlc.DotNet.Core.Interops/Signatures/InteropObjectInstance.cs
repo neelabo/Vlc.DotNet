@@ -6,31 +6,34 @@ namespace Vlc.DotNet.Core.Interops.Signatures
     {
         internal IntPtr Pointer { get; set; }
 
-        private bool myIsDisposing = false;
+        private bool disposedValue;
 
         protected InteropObjectInstance(IntPtr pointer)
         {
             Pointer = pointer;
         }
 
-        public void Dispose()
-        {
-            if (myIsDisposing)
-                return;
-            myIsDisposing = true;
-            Dispose(true);
-
-            GC.SuppressFinalize(this);
-        }
-
         protected virtual void Dispose(bool disposing)
         {
-            Pointer = IntPtr.Zero;
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                }
+                Pointer = IntPtr.Zero;
+                disposedValue = true;
+            }
         }
 
         ~InteropObjectInstance()
         {
-            Dispose(false);
+            Dispose(disposing: false);
+        }
+
+        public void Dispose()
+        {
+            Dispose(disposing: true);
+            GC.SuppressFinalize(this);
         }
 
         public override bool Equals(object obj)

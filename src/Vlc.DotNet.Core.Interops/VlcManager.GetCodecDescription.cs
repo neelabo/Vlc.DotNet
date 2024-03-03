@@ -14,6 +14,8 @@ namespace Vlc.DotNet.Core.Interops
         /// <returns>The codec description</returns>
         public string GetCodecDescription(MediaTrackTypes type, UInt32 codec)
         {
+            if (disposedValue) throw new ObjectDisposedException(GetType().FullName);
+
             if (VlcVersionNumber.Major < 3)
             {
                 throw new InvalidOperationException($"You need VLC version 3.0 or higher to be able to use {nameof(GetCodecDescription)}");

@@ -18,6 +18,8 @@ namespace Vlc.DotNet.Core
 
         public void OnMediaPlayerMediaChanged(VlcMedia media)
         {
+            if (disposedValue) return;
+
             MediaChanged?.Invoke(this, new VlcMediaPlayerMediaChangedEventArgs(media));
         }
     }

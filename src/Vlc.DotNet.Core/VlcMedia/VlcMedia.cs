@@ -7,6 +7,8 @@ namespace Vlc.DotNet.Core
 {
     public sealed partial class VlcMedia : IDisposable
     {
+        private bool disposedValue;
+
         private readonly VlcMediaPlayer myVlcMediaPlayer;
 
         internal VlcMedia(VlcMediaPlayer player, FileInfo file, params string[] options)
@@ -18,7 +20,7 @@ namespace Vlc.DotNet.Core
             : this(player, player.Manager.CreateNewMediaFromLocation(uri.AbsoluteUri).AddOptionToMedia(player.Manager, options))
         {
         }
-        
+
         internal VlcMedia(VlcMediaPlayer player, string mrl, params string[] options)
             : this(player, player.Manager.CreateNewMediaFromLocation(mrl).AddOptionToMedia(player.Manager, options))
         {
@@ -37,6 +39,8 @@ namespace Vlc.DotNet.Core
 
         internal void Initialize()
         {
+            if (disposedValue) return;
+
             RegisterEvents();
         }
 
@@ -44,62 +48,92 @@ namespace Vlc.DotNet.Core
 
         public string Mrl
         {
-            get { return myVlcMediaPlayer.Manager.GetMediaMrl(MediaInstance); }
+            get
+            {
+                if (disposedValue) return null;
+                return myVlcMediaPlayer.Manager.GetMediaMrl(MediaInstance);
+            }
         }
 
         public MediaStates State
         {
-            get { return myVlcMediaPlayer.Manager.GetMediaState(MediaInstance); }
+            get
+            {
+                if (disposedValue) return MediaStates.NothingSpecial;
+                return myVlcMediaPlayer.Manager.GetMediaState(MediaInstance);
+            }
         }
 
         public TimeSpan Duration
         {
-            get { return TimeSpan.FromMilliseconds(myVlcMediaPlayer.Manager.GetMediaDuration(MediaInstance)); }
-        }
-
-        public void Dispose()
-        {
-            Dispose(true);
+            get
+            {
+                if (disposedValue) return default;
+                return TimeSpan.FromMilliseconds(myVlcMediaPlayer.Manager.GetMediaDuration(MediaInstance));
+            }
         }
 
         private void Dispose(bool disposing)
         {
-            if (disposing && MediaInstance != IntPtr.Zero)
+            if (!disposedValue)
             {
-                UnregisterEvents();
-                MediaInstance.Dispose();
+                if (disposing && MediaInstance != IntPtr.Zero)
+                {
+                    UnregisterEvents();
+                    MediaInstance.Dispose();
+                }
+                disposedValue = true;
             }
-
-            GC.SuppressFinalize(this);
         }
 
-        ~VlcMedia()
+        public void Dispose()
         {
-            Dispose(false);
+            Dispose(disposing: true);
+            GC.SuppressFinalize(this);
         }
 
         public VlcMedia Clone()
         {
-            var cloned = myVlcMediaPlayer.Manager.CloneMedia(MediaInstance);
-            if (cloned != IntPtr.Zero)
-                return new VlcMedia(myVlcMediaPlayer, cloned);
+            if (disposedValue) return null;
+
+            try
+            {
+                var cloned = myVlcMediaPlayer.Manager.CloneMedia(MediaInstance);
+                if (cloned != IntPtr.Zero)
+                    return new VlcMedia(myVlcMediaPlayer, cloned);
+            }
+            catch (ObjectDisposedException)
+            {
+            }
             return null;
         }
 
         public MediaStatsStructure Statistics
         {
-            get { return myVlcMediaPlayer.Manager.GetMediaStats(MediaInstance); }
+            get
+            {
+                if (disposedValue) return default;
+                return myVlcMediaPlayer.Manager.GetMediaStats(MediaInstance);
+            }
         }
 
         public MediaTrack[] Tracks
         {
-            get { return myVlcMediaPlayer.Manager.GetMediaTracks(MediaInstance); }
+            get
+            {
+                if (disposedValue) return Array.Empty<MediaTrack>();
+                return myVlcMediaPlayer.Manager.GetMediaTracks(MediaInstance);
+            }
         }
 
         [Obsolete("Use Tracks instead")]
         public MediaTrackInfosStructure[] TracksInformations
         {
-            get { return myVlcMediaPlayer.Manager.GetMediaTracksInformations(MediaInstance); }
+            get
+            {
+                if (disposedValue) return Array.Empty<MediaTrackInfosStructure>();
+                return myVlcMediaPlayer.Manager.GetMediaTracksInformations(MediaInstance);
+            }
         }
 
         private void RegisterEvents()

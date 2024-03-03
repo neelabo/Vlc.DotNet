@@ -17,6 +17,8 @@ namespace Vlc.DotNet.Core
 
         public void OnMediaPlayerPausableChanged(bool paused)
         {
+            if (disposedValue) return;
+
             PausableChanged?.Invoke(this, new VlcMediaPlayerPausableChangedEventArgs(paused));
         }
     }

@@ -7,6 +7,8 @@ namespace Vlc.DotNet.Core.Interops
     {
         public void SetVideoSpuDelay(VlcMediaPlayerInstance mediaPlayerInstance, long delay)
         {
+            if (disposedValue) throw new ObjectDisposedException(GetType().FullName);
+
             if (mediaPlayerInstance == IntPtr.Zero)
                 throw new ArgumentException("Media player instance is not initialized.");
             myLibraryLoader.GetInteropDelegate<SetVideoSpuDelay>().Invoke(mediaPlayerInstance, delay);

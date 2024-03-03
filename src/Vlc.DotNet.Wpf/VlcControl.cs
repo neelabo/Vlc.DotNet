@@ -11,6 +11,8 @@ namespace Vlc.DotNet.Wpf
     /// </summary>
     public class VlcControl: UserControl, IDisposable
     {
+        private bool disposedValue;
+
         /// <summary>
         /// The Viewbox that contains the video image
         /// </summary>
@@ -40,6 +42,7 @@ namespace Vlc.DotNet.Wpf
 
             set
             {
+                if (disposedValue) return;
                 sourceProvider.IsAlphaChannelEnabled = value;
             }
         }
@@ -62,10 +65,23 @@ namespace Vlc.DotNet.Wpf
             this.videoContent.SetBinding(Image.SourceProperty, new Binding(nameof(VlcVideoSourceProvider.VideoSource)) { Source = sourceProvider });
         }
 
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    sourceProvider.Dispose();
+                }
+                disposedValue = true;
+            }
+        }
+
         /// <inheritdoc />
         public void Dispose()
         {
-            sourceProvider.Dispose();
+            Dispose(disposing: true);
+            GC.SuppressFinalize(this);
         }
     }
 }
