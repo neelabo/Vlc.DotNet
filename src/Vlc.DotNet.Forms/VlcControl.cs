@@ -35,6 +35,7 @@ namespace Vlc.DotNet.Forms
         private string[] _vlcMediaPlayerOptions = null;
 
         [Category("Media Player")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public string[] VlcMediaplayerOptions
         {
             get { return this._vlcMediaPlayerOptions; }
@@ -52,6 +53,7 @@ namespace Vlc.DotNet.Forms
         private DirectoryInfo _vlcLibDirectory = null;
         [Category("Media Player")]
         [Editor(typeof(DirectoryEditor), typeof(UITypeEditor))]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public DirectoryInfo VlcLibDirectory {
             get { return this._vlcLibDirectory; }
             set
@@ -463,6 +465,7 @@ namespace Vlc.DotNet.Forms
             }
         }
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         [Browsable(false)]
         public int Spu
         {

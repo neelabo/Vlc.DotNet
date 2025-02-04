@@ -87,7 +87,7 @@ namespace Samples.WinForms.MultiplePlayers
                 };
 
                 var uiUpdatedTask = new TaskCompletionSource<bool>(TaskCreationOptions.RunContinuationsAsynchronously);
-                panel.BeginInvoke( (MethodInvoker) delegate
+                panel.BeginInvoke( (System.Windows.Forms.MethodInvoker) delegate
                 {
                     panel.Controls.Add(player);
                     player.EndInit();
@@ -138,7 +138,7 @@ namespace Samples.WinForms.MultiplePlayers
                     UnhookEvents(player);
 
                     // Remove player from the Panel in the Ui thread.
-                    panel.BeginInvoke( (MethodInvoker) delegate
+                    panel.BeginInvoke( (System.Windows.Forms.MethodInvoker) delegate
                     {
                         // Remove the control player.
                         panel.Controls.Remove(player);
@@ -154,7 +154,7 @@ namespace Samples.WinForms.MultiplePlayers
                     listOfControls.Remove(player);
 
                     // Only left to dispose the player, let the player do it on its own thread when it needs to.
-                    panel.BeginInvoke( (MethodInvoker) delegate
+                    panel.BeginInvoke( (System.Windows.Forms.MethodInvoker) delegate
                     {
                         player.Dispose();
                     });
