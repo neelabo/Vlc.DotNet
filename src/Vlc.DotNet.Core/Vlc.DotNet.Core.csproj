@@ -3,7 +3,7 @@
   
   <PropertyGroup>
     <Title>Vlc.DotNet.Core</Title>
-    <TargetFrameworks>net9.0</TargetFrameworks>
+    <TargetFrameworks>net10.0</TargetFrameworks>
     <Description>.Net API to use the audio/video capabilities of the VLC libraries.</Description>
     <PackageTags>vlc media api</PackageTags>
   </PropertyGroup>
